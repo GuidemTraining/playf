@@ -11,4 +11,9 @@ $(document).ready(function(){
         $("#flag-input").val("Answer is incorrect!");
     }
   });
+
+  // Disable the default form behavior when the form is submitted
+  $("#flag-form").submit(function(event) {
+    event.preventDefault(); // Prevent the default form submission
+  });
 });
