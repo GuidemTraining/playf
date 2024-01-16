@@ -14,8 +14,8 @@ $(document).ready(function () {
       // Sanitize the answer to prevent XSS
       answer = sanitizeHTML(answer);
 
-      // Display the answer in a Toastify alert
-      displayToastAlert("Submitted Answer: " + answer);
+      // Display the answer in a custom alert
+      displayCustomAlert("Submitted Answer: " + answer);
     });
   }
 
@@ -36,16 +36,19 @@ $(document).ready(function () {
     return temp.innerHTML;
   }
 
-  // Function to display a Toastify alert
-  function displayToastAlert(message) {
-    Toastify({
-      text: message,
-      duration: 5000, // Display for 5 seconds
-      close: true, // Show close button
-      gravity: "bottom", // Position at the bottom
-      position: "right", // Position on the right
-      backgroundColor: "#007bff", // Background color
-      stopOnFocus: true, // Close on focus
-    }).showToast();
+  // Function to display a custom alert
+  function displayCustomAlert(message) {
+    // Create a custom alert element
+    var customAlert = document.createElement("div");
+    customAlert.className = "custom-alert";
+    customAlert.textContent = message;
+
+    // Append the custom alert to the body
+    document.body.appendChild(customAlert);
+
+    // Automatically remove the custom alert after 5 seconds
+    setTimeout(function () {
+      document.body.removeChild(customAlert);
+    }, 5000);
   }
-})
+});
