@@ -1,17 +1,14 @@
-document.addEventListener("DOMContentLoaded", function () {
-    var form = document.getElementById("flag-form");
-    var inputField = document.getElementById("flag-input");
-    var submitButton = document.getElementById("submit-button");
+$(document).ready(function(){
+  // Add click event handler to the existing submit button
+  $("#cwr-button").click(function(event) {
+    event.preventDefault(); // Prevent the default form submission
+    
+    var answer = $("#flag-input").val();
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); 
-
-        var answer = inputField.value;
-
-        if (answer === "correctthis") {
-            inputField.value = "Answer is correct!";
-        } else {
-            inputField.value = "Answer is incorrect!";
-        }
-    });
+    if (answer === "correctthis") {
+        $("#flag-input").val("Answer is correct!");
+    } else {
+        $("#flag-input").val("Answer is incorrect!");
+    }
+  });
 });
