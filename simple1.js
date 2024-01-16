@@ -8,12 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var answer = inputField.value;
 
-        if (answer === "correct") {
+        if (answer === "correctthis") {
             alert("Answer is correct!");
         } else {
             alert("Answer is incorrect!");
         }
-
-        return false; 
     });
 });
