@@ -32,10 +32,10 @@ $(document).ready(function () {
                     padding: '10px',
                     border: 'none',
                     borderRadius: '4px',
-                    backgroundColor: isCompleted || isCorrect ? '#28a745' : '#007bff', // Green for completed
+                    backgroundColor: '#007bff', // Blue for non-completed
                     color: 'white',
                     fontSize: '16px',
-                    cursor: isCompleted || isCorrect ? 'default' : 'pointer',
+                    cursor: 'pointer',
                     transition: 'background-color 0.2s'
                 },
                 disabled: isCompleted || isCorrect,
@@ -53,6 +53,15 @@ $(document).ready(function () {
                 }
             });
 
+            // Ensure consistent design for both completed and non-completed forms
+            if (isCompleted || isCorrect) {
+                $button.css({
+                    backgroundColor: '#28a745', // Green for completed
+                    cursor: 'default',
+                });
+            }
+
+            // Create and append the button and alert div once, outside of the loop
             var $alertDiv = $("<div>", { class: 'kapow-alert' });
             $form.append($button).append($alertDiv);
         }
