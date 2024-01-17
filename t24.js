@@ -47,38 +47,38 @@ $(document).ready(function () {
                         $(this).css('backgroundColor', '#28a745').text('Completed').prop('disabled', true);
                         localStorage.setItem(isCorrectKey, 'true');
                         localStorage.setItem(isCompletedKey, 'true');
-                } else {
-                    displayAlert('Incorrect Answer! Please try again.', 'red', i);
+                    } else {
+                        displayAlert('Incorrect Answer! Please try again.', 'red', i);
+                    }
                 }
-            }
-        });
+            });
 
-        var $alertDiv = $("<div>", { class: 'kapow-alert' });
-        $form.append($button).append($alertDiv);
+            var $alertDiv = $("<div>", { class: 'kapow-alert' });
+            $form.append($button).append($alertDiv);
+        }
+    };
+
+    function sanitizeHTML(str) {
+        var temp = document.createElement('div');
+        temp.textContent = str;
+        return temp.innerHTML;
     }
-};
 
-function sanitizeHTML(str) {
-    var temp = document.createElement('div');
-    temp.textContent = str;
-    return temp.innerHTML;
-}
+    function displayAlert(message, color, formNumber) {
+        var alertDiv = $(`#flag-form${formNumber} .kapow-alert`);
+        alertDiv.text(message).css('color', color);
+        setTimeout(function () {
+            alertDiv.text('');
+        }, 5000);
+    }
 
-function displayAlert(message, color, formNumber) {
-    var alertDiv = $(`#flag-form${formNumber} .kapow-alert`);
-    alertDiv.text(message).css('color', color);
-    setTimeout(function () {
-        alertDiv.text('');
-    }, 5000);
-}
+    // Initialize forms based on the local storage
+    add_submit_btns_to_forms();
 
-// Initialize forms based on the local storage
-add_submit_btns_to_forms();
-
-// Thinkific CoursePlayerV2 hook logic (if applicable)
-if (typeof CoursePlayerV2 !== 'undefined') {
-    CoursePlayerV2.on('hooks:contentDidChange', function (data) {
-        setTimeout(add_submit_btns_to_forms, 1000);
-    });
-}
+    // Thinkific CoursePlayerV2 hook logic (if applicable)
+    if (typeof CoursePlayerV2 !== 'undefined') {
+        CoursePlayerV2.on('hooks:contentDidChange', function (data) {
+            setTimeout(add_submit_btns_to_forms, 1000);
+        });
+    }
 });
