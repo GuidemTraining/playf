@@ -9,12 +9,9 @@ $(document).ready(function () {
 
     // Function to create a submit button for a given form
     const add_submit_btn = function (formNumber) {
-        // Check if the user has already completed or submitted the correct answer
         var isCompleted = localStorage.getItem(`isCompleted${formNumber}`);
         var isCorrect = localStorage.getItem(`isCorrect${formNumber}`);
-
-        // Create a div with a submit button
-        var $div = $("<div>", { class: 'kapow-submit' });
+        
         var $button = $("<button>", {
             text: 'Submit',
             class: 'kapow-submit-btn',
@@ -28,38 +25,29 @@ $(document).ready(function () {
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
             }
-        });
-
-        // Add a div for the alert message
-        var $alertDiv = $("<div>", { class: 'kapow-alert' });
-
-        // Append the button and alert div to the form
-        $(`#flag-form${formNumber}`).append($div.append($button), $alertDiv);
-
-        // Disable the button and input if the task is already completed
-        if (isCompleted || isCorrect) {
-            $button.addClass("completed").text("Completed").prop("disabled", true);
-            $(`#flag-input${formNumber}`).prop("disabled", true).css("background-color", "#ccc");
-        }
-
-        // Add click event handler to the submit button
-        $button.click(function () {
-            if ($(this).hasClass("completed")) {
-                return; // Do nothing if the task is already completed
+        }).click(function () {
+            if (isCorrect) {
+                return;
             }
             var answer = sanitizeHTML($(`#flag-input${formNumber}`).val());
-            var correctAnswer = correctAnswers[formNumber];
-
-            if (answer === correctAnswer) {
-                $(this).addClass("completed").text("Completed").prop("disabled", true);
-                $(`#flag-input${formNumber}`).prop("disabled", true).css("background-color", "#ccc");
+            if (answer === correctAnswers[formNumber]) {
                 displayAlert("Correct Answer!", "green", formNumber);
-                localStorage.setItem(`isCorrect${formNumber}`, 'true');
+                $(this).prop("disabled", true).text("Completed");
                 localStorage.setItem(`isCompleted${formNumber}`, 'true');
+                localStorage.setItem(`isCorrect${formNumber}`, 'true');
             } else {
                 displayAlert("Incorrect Answer! Please try again.", "red", formNumber);
             }
         });
+
+        var $alertDiv = $("<div>", { class: 'kapow-alert' });
+        
+        $(`#flag-form${formNumber}`).append($button, $alertDiv);
+
+        if (isCompleted || isCorrect) {
+            $button.prop("disabled", true).text("Completed");
+            $(`#flag-input${formNumber}`).prop("disabled", true).css("background-color", "#ccc");
+        }
     };
 
     // Function to sanitize HTML input
@@ -71,17 +59,22 @@ $(document).ready(function () {
 
     // Function to display an alert message
     function displayAlert(message, color, formNumber) {
-        var alertDiv = $(`#flag-form${formNumber} .kapow-alert`);
-        alertDiv.text(message).css("color", color);
+        var $alertDiv = $(`#flag-form${formNumber} .kapow-alert`);
+        $alertDiv.text(message).css("color", color);
         setTimeout(function () {
-            alertDiv.text("");
+            $alertDiv.text("");
         }, 5000);
     }
 
-    // Add submit button to each form
-    for (let i = 1; i <= 10; i++) {
-        add_submit_btn(i);
+    // Function to add submit buttons to all forms
+    function add_submit_buttons_to_all_forms() {
+        for (let i = 1; i <= 10; i++) {
+            add_submit_btn(i);
+        }
     }
+
+    // Initial call to add submit buttons to all forms
+    add_submit_buttons_to_all_forms();
 
     // Thinkific CoursePlayerV2 hooks
     if (typeof CoursePlayerV2 !== 'undefined') {
