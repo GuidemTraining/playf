@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     // Create a div with a submit button
     var $div = $("<div class='kapow-submit'>");
-    $("#input-form").append($div);
+    $("#kapow-form").append($div);
     var button_style = "padding: 10px; border: none; border-radius: 4px; background-color: #007bff; color: white; font-size: 16px; cursor: pointer; transition: background-color 0.2s;";
     var button_html = "<div class='kapow-submit-btn' style='" + button_style + "'><span class='submit-text' style='padding-left: 5px;'>Submit</span></div>";
     $div.append(button_html);
