@@ -1,8 +1,8 @@
 $(document).ready(function () {
   const add_submit_btn = function () {
     // Check if the user has already completed or submitted the correct answer
-    var isCompleted = localStorage.getItem('isCompleted');
-    var isCorrect = localStorage.getItem('isCorrect');
+    //var isCompleted = localStorage.getItem('isCompleted');
+    //var isCorrect = localStorage.getItem('isCorrect');
 
     // Create a div with a submit button
     var $div = $("<div class='kapow-submit'>");
