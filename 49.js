@@ -1,4 +1,4 @@
-4$(document).ready(function () {
+$(document).ready(function () {
     // Dictionary of correct answers for each form
     var correctAnswers = {
         "1": "correctAnswer1", // Replace with the actual answer for form 1
