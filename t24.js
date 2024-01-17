@@ -29,13 +29,13 @@ $(document).ready(function () {
                 class: 'kapow-submit-btn',
                 text: isCompleted || isCorrect ? 'Completed' : 'Submit',
                 css: {
-                    padding: '10px',
+                    padding: '10px', // Adjust the padding to change the size
                     border: 'none',
                     borderRadius: '4px',
-                    backgroundColor: '#007bff', // Blue for non-completed
+                    backgroundColor: isCompleted || isCorrect ? '#28a745' : '#007bff', // Green for completed
                     color: 'white',
                     fontSize: '16px',
-                    cursor: 'pointer',
+                    cursor: isCompleted || isCorrect ? 'default' : 'pointer',
                     transition: 'background-color 0.2s'
                 },
                 disabled: isCompleted || isCorrect,
