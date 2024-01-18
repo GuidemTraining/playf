@@ -86,4 +86,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize forms based on the local storage
     addSubmitButtonsToForms();
+        // Thinkific CoursePlayerV2 hook logic
+    if (typeof CoursePlayerV2 !== 'undefined') {
+        CoursePlayerV2.on('hooks:contentDidChange', function (data) {
+            setTimeout(addSubmitButtonsToForms, 1000);
+        });
+    }
+    
 });
