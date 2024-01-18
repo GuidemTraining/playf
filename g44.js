@@ -31,7 +31,7 @@ function waitForGuidemButtonsAndAddEvent() {
             clearInterval(intervalId); // Stop checking once buttons are found or max attempts reached
         }
         attempts++;
-    }, 1000); // Check every 1 second
+    }, 3000); // Check every 3 second
 }
 
 function displayAlert(message, color) {
