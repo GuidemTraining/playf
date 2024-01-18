@@ -117,6 +117,7 @@ $(document).ready(function () {
     // Use window.onload for additional reliability in SPA
     window.onload = function() {
         reloadGuidemButtonHandlers();
+        addEventToGuidemButtons();
         console.log("Window has fully loaded.");
     };
 });
