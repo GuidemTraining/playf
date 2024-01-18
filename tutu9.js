@@ -82,7 +82,7 @@ $(document).ready(function () {
 
     const intervalId = setInterval(function () {
         if (document.readyState === "complete") { // Wait for the page to fully load
-            addEventToButtons(answer);
+            addEventToGuidemButtons(answer);
             clearInterval(intervalId); // Stop checking once the event listeners are added
         }
         attempts++;
