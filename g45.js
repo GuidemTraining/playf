@@ -25,7 +25,9 @@ function displayAlert(message, color) {
 
 // Continuous loop to reapply event handlers
 // setInterval(addEventToGuidemButtons, 2000); // Reapply every 1 second
-
+window.onpopstate = function(event) {
+    console.log("URL changed, reapplying event handlers.");
+    addEventToGuidemButtons();
 // Thinkific CoursePlayerV2 hook logic (optional in this case)
 if (typeof CoursePlayerV2 !== 'undefined') {
     CoursePlayerV2.on('hooks:contentDidChange', function (data) {
