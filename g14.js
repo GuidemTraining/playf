@@ -1,23 +1,28 @@
+let eventListenerAdded = false; // Variable to track if the event listener has been added
+
 function addEventToButtons(answer) {
-    const buttons = document.querySelectorAll('.guidem-button');
-    buttons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            const formId = button.id.replace("submit-button", "gflag-form");
-            const inputId = button.id.replace("submit-button", "gflag-input");
-            const form = document.getElementById(formId);
-            const input = document.getElementById(inputId);
-            if (input) {
-                const userInput = input.value;
-                const userInputHash = sha256(userInput);
-                if (userInputHash === answer) {
-                    displayAlert('Correct Answer!', 'green');
-                } else {
-                    displayAlert('Incorrect Answer! Please try again.', 'red');
+    if (!eventListenerAdded) { // Check if the event listener has been added
+        const buttons = document.querySelectorAll('.guidem-button');
+        buttons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const formId = button.id.replace("submit-button", "gflag-form");
+                const inputId = button.id.replace("submit-button", "gflag-input");
+                const form = document.getElementById(formId);
+                const input = document.getElementById(inputId);
+                if (input) {
+                    const userInput = input.value;
+                    const userInputHash = sha256(userInput);
+                    if (userInputHash === answer) {
+                        displayAlert('Correct Answer!', 'green');
+                    } else {
+                        displayAlert('Incorrect Answer! Please try again.', 'red');
+                    }
                 }
-            }
+            });
+            console.log("Event added to button:", button.id);
         });
-        console.log("Event added to button:", button.id);
-    });
+        eventListenerAdded = true; // Set the flag to indicate that the event listener has been added
+    }
 }
 
 function waitForButtonsAndAddEvents(answer) {
@@ -25,8 +30,8 @@ function waitForButtonsAndAddEvents(answer) {
     let attempts = 0;
 
     const intervalId = setInterval(function () {
-        if (addEventToButtons(answer) || attempts >= maxAttempts) {
-            clearInterval(intervalId); // Stop checking once the buttons are found or max attempts reached
+        if (eventListenerAdded || attempts >= maxAttempts) {
+            clearInterval(intervalId); // Stop checking once the event listener is added or max attempts reached
         }
         attempts++;
     }, 1000); // Check every 1 second
