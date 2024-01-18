@@ -108,6 +108,8 @@ $(document).ready(function () {
     // Thinkific CoursePlayerV2 hook logic (if applicable)
     if (typeof CoursePlayerV2 !== 'undefined') {
         CoursePlayerV2.on('hooks:contentDidChange', function (data) {
+            setTimeout(function() {
+            }, 1000);
             // Trigger a reload of event handlers when CoursePlayer content changes
             reloadGuidemButtonHandlers();
             console.log('CoursePlayer content changed');
