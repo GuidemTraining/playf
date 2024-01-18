@@ -1,67 +1,29 @@
-// Get references to modal and buttons
-const modal = document.createElement('div');
-modal.id = 'cheatsheetModal';
-modal.style.display = 'none';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Button Event Handling</title>
+</head>
+<body>
+    <button id="myButton">Click Me</button>
 
-const modalContent = document.createElement('div');
-modalContent.className = 'modal-content';
+    <script>
+        function clickHandler() {
+            alert('Button Clicked!');
+        }
 
-const closeModalButton = document.createElement('span');
-closeModalButton.id = 'closeModalButton';
-closeModalButton.className = 'close';
-closeModalButton.innerHTML = '&times;';
+        // Initial event handler
+        const button = document.getElementById('myButton');
+        button.addEventListener('click', clickHandler);
 
-const markdownInput = document.createElement('textarea');
-markdownInput.id = 'markdownInput';
-markdownInput.rows = '10';
-markdownInput.cols = '50';
-markdownInput.placeholder = 'Enter Markdown here';
+        // Function to reload the event handler
+        function reloadEventHandler() {
+            button.removeEventListener('click', clickHandler);
+            button.addEventListener('click', clickHandler);
+        }
 
-const renderedMarkdown = document.createElement('div');
-renderedMarkdown.id = 'renderedMarkdown';
-
-// Function to open the modal
-function openModal() {
-    modal.style.display = 'block';
-}
-
-// Function to close the modal
-function closeModal() {
-    modal.style.display = 'none';
-}
-
-// Close the modal if the user clicks outside of it
-window.addEventListener('click', function(event) {
-    if (event.target === modal) {
-        closeModal();
-    }
-});
-
-// Function to render Markdown
-function renderMarkdown() {
-    const markdownText = markdownInput.value;
-    const htmlText = marked(markdownText);
-    renderedMarkdown.innerHTML = htmlText;
-}
-
-// Listen for changes in the input and render Markdown
-markdownInput.addEventListener('input', renderMarkdown);
-
-// Add elements to the modal
-modalContent.appendChild(closeModalButton);
-modalContent.appendChild(markdownInput);
-modalContent.appendChild(renderedMarkdown);
-modal.appendChild(modalContent);
-
-// Button to open the modal
-const openModalButton = document.createElement('button');
-openModalButton.id = 'openModalButton';
-openModalButton.innerHTML = 'Open Cheatsheet';
-openModalButton.addEventListener('click', openModal);
-
-// Append the button and modal to the body
-document.body.appendChild(openModalButton);
-document.body.appendChild(modal);
-
-// Initial rendering
-renderMarkdown();
+        // Reload the event handler every second
+        setInterval(reloadEventHandler, 1000);
+    </script>
+</body>
+</html>
