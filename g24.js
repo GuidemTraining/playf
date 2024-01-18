@@ -58,17 +58,7 @@ function sha256(input) {
 }
 
 function displayAlert(message, color) {
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.style.backgroundColor = color;
-    notification.textContent = message;
-
-    // Append the notification to the container
-    const container = document.getElementById('notification-container');
-    container.appendChild(notification);
-
-    // Automatically remove the notification after a few seconds (adjust the timeout as needed)
-    setTimeout(() => {
-        container.removeChild(notification);
-    }, 3000); // Remove after 3 seconds (adjust as needed)
+    // Customize and display your alert here
+    // You can use Bootstrap modals or other UI frameworks for a prettier alert
+    alert(message);
 }
