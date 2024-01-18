@@ -74,10 +74,23 @@ $(document).ready(function () {
             console.log('CoursePlayer content changed'); // Debug statement
         });
     }
-});
 
-// Use window.onload for additional reliability in SPA
-window.onload = function () {
-    // Call your custom initialization logic here
-    console.log("Window has fully loaded.");
-};
+    // Use window.onload for additional reliability in SPA
+    window.onload = function () {
+        // Call your custom initialization logic here
+        console.log("Window has fully loaded.");
+    };
+
+    // Function to display a custom notification with animation
+    function showCustomNotification(message, duration) {
+        const notification = document.getElementById('custom-notification');
+        notification.textContent = message;
+        notification.style.display = 'block';
+        notification.style.animation = 'fadeInOut 3s forwards'; // Apply your animation here
+
+        setTimeout(function () {
+            notification.style.animation = '';
+            notification.style.display = 'none';
+        }, duration);
+    }
+});
