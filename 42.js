@@ -39,6 +39,9 @@ function displayAlert(message, color) {
 // Thinkific CoursePlayerV2 hook logic (if applicable)
 if (typeof CoursePlayerV2 !== 'undefined') {
     CoursePlayerV2.on('hooks:contentDidChange', function (data) {
-        waitForGuidemButtonsAndAddEvent();
+        // Wait for 1 second before executing waitForGuidemButtonsAndAddEvent
+        setTimeout(function() {
+            waitForGuidemButtonsAndAddEvent();
+        }, 1000); 
     });
 }
