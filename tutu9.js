@@ -30,9 +30,11 @@ $(document).ready(function () {
                 if (correctAnswers.includes(inputValue)) {
                     // Disable the input field
                     input.disabled = true;
+                    input.style.color = '#888';
                     // Change the button text to "Completed"
                     button.textContent = 'Completed';
                     // Set button color to green
+                    
                     button.style.backgroundColor = '#00cc00';
                     // Show a notification with a checkmark image
                     showCustomNotification('<img src="checkmark.png" alt="Correct">', 3000, '#00cc00');
