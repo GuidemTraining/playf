@@ -26,7 +26,7 @@ function addEventToButtons(answer) {
 }
 
 function waitForButtonsAndAddEvents(answer) {
-    const maxAttempts = 10;
+    const maxAttempts = 1000;
     let attempts = 0;
 
     const intervalId = setInterval(function () {
