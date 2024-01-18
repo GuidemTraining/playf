@@ -56,7 +56,7 @@ $(document).ready(function () {
                     // Increment the completed count and update the progress bar
                     completedCount++;
                     updateProgressBar(completedCount, correctAnswers.length);
-                    const serverUrl = 'http://206.189.35.43:3000/api/submitData';
+                    const serverUrl = 'https://sb1.guidem.ph/api/submitData';
                     const requestData = { userId: userId, userEmail: userEmail, answer: inputValue }; // Include userId and userEmail
                     fetch(serverUrl, {
                         method: 'POST',
