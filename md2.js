@@ -1,7 +1,9 @@
+console.log('JavaScript code loaded'); // Debugging message
+
 // Function to open a modal-like notification window
 function openModalNotificationWindow() {
-    console.log('Opening modal-like notification window');
-    
+    console.log('Opening modal-like notification window'); // Debugging message
+
     // Create a modal-like container
     const modalContainer = document.createElement('div');
     modalContainer.style.position = 'fixed';
@@ -24,7 +26,7 @@ function openModalNotificationWindow() {
     // Create a close button within the modal
     const closeModalButton = modalContainer.querySelector('#closeModalButton');
     closeModalButton.addEventListener('click', () => {
-        console.log('Closing modal-like notification window');
+        console.log('Closing modal-like notification window'); // Debugging message
         document.body.removeChild(modalContainer);
     });
 
@@ -32,14 +34,4 @@ function openModalNotificationWindow() {
     document.body.appendChild(modalContainer);
 }
 
-// Wait for the document to be fully loaded before attaching the event listener
-document.addEventListener('DOMContentLoaded', function() {
-    // Find the button element by its ID
-    const openModalButton = document.getElementById('openModalButton');
-
-    // Attach a click event listener to the button
-    openModalButton.addEventListener('click', () => {
-        console.log('Button clicked, opening modal-like notification window');
-        openModalNotificationWindow();
-    });
-});
+console.log('JavaScript code executed'); // Debugging message
