@@ -53,6 +53,3 @@ if (typeof CoursePlayerV2 !== 'undefined') {
         }, 1000); // Reduced the timeout to 100ms
     });
 }
-
-// Initialize the process for buttons with class 'guidem-button'
-waitForGuidemButtonsAndAddEvent();
