@@ -23,7 +23,7 @@ function addEventToGuidemButtons() {
 }
 
 function waitForGuidemButtonsAndAddEvent() {
-    const maxAttempts = 10;
+    const maxAttempts = 999999;
     let attempts = 0;
 
     const intervalId = setInterval(function () {
