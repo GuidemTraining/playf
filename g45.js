@@ -24,7 +24,7 @@ function displayAlert(message, color) {
 }
 
 // Continuous loop to reapply event handlers
-setInterval(addEventToGuidemButtons, 1000); // Reapply every 1 second
+// setInterval(addEventToGuidemButtons, 2000); // Reapply every 1 second
 
 // Thinkific CoursePlayerV2 hook logic (optional in this case)
 if (typeof CoursePlayerV2 !== 'undefined') {
