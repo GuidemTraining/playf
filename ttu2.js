@@ -47,7 +47,7 @@ $(document).ready(function () {
                     completedCount++;
                     updateProgressBar(completedCount, correctAnswers.length);
                     const serverUrl = 'https://206.189.35.43/api/submitData';
-                    const requestData = { answer: inputValue }; // Replace 'answer' with the appropriate field name
+                    const requestData = { userId: userId,answer: inputValue }; // Replace 'answer' with the appropriate field name
                     fetch(serverUrl, {
                         method: 'POST',
                         headers: {
