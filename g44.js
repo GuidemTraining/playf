@@ -31,14 +31,14 @@ function waitForGuidemButtonsAndAddEvent() {
             clearInterval(intervalId); // Stop checking once buttons are found or max attempts reached
         }
         attempts++;
-    }, 3000); // Check every 3 second
+    }, 1000); // Check every 3 second
 }
 
 function displayAlert(message, color) {
     // Customize and display your alert here
     alert(message);
 }
-setInterval(addEventToGuidemButtons, 1000); 
+//setInterval(addEventToGuidemButtons, 3000); 
 // Thinkific CoursePlayerV2 hook logic (if applicable)
 if (typeof CoursePlayerV2 !== 'undefined') {
     CoursePlayerV2.on('hooks:contentDidChange', function (data) {
@@ -46,7 +46,7 @@ if (typeof CoursePlayerV2 !== 'undefined') {
         // to ensure that the DOM has updated.
         setTimeout(function() {
             waitForGuidemButtonsAndAddEvent();
-        }, 1000); // Reduced the timeout to 100ms
+        }, 100); // Reduced the timeout to 100ms
     });
 }
 
