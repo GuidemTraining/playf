@@ -5,8 +5,10 @@ $(document).ready(function () {
         const notification = document.getElementById('custom-notification');
         notification.textContent = message;
         notification.style.display = 'block';
+        console.log(`Notification displayed: ${message}`); // Debug statement
         setTimeout(function () {
             notification.style.display = 'none';
+            console.log('Notification hidden'); // Debug statement
         }, duration);
     }
 
@@ -19,7 +21,8 @@ $(document).ready(function () {
             const input = form.querySelector('input[type="text"]');
             if (input) {
                 // Display a custom notification with the input value
-                showCustomNotification(`Button clicked! You entered: ${input.value}`, 3000); // 3 seconds duration
+                const inputValue = input.value;
+                showCustomNotification(`Button clicked! You entered: ${inputValue}`, 3000); // 3 seconds duration
             }
         }
     }
@@ -32,6 +35,7 @@ $(document).ready(function () {
             button.removeEventListener('click', buttonClickHandler);
             // Add the event listener again
             button.addEventListener('click', buttonClickHandler);
+            console.log(`Event added to button: ${button.id}`); // Debug statement
         });
         console.log("Events (re)added to buttons with class 'guidem-button'");
         return buttons.length > 0; // Return true if buttons were found and events were added
@@ -43,6 +47,7 @@ $(document).ready(function () {
         const buttons = document.querySelectorAll('.guidem-button');
         buttons.forEach(button => {
             button.removeEventListener('click', buttonClickHandler);
+            console.log(`Event removed from button: ${button.id}`); // Debug statement
         });
         // Add event listeners again
         addEventToGuidemButtons();
@@ -54,6 +59,7 @@ $(document).ready(function () {
     if (reloadButton) {
         reloadButton.addEventListener('click', function () {
             reloadGuidemButtonHandlers();
+            console.log('Event handlers reloaded'); // Debug statement
         });
     }
 
@@ -65,6 +71,7 @@ $(document).ready(function () {
         CoursePlayerV2.on('hooks:contentDidChange', function (data) {
             // Trigger a reload of event handlers when CoursePlayer content changes
             reloadGuidemButtonHandlers();
+            console.log('CoursePlayer content changed'); // Debug statement
         });
     }
 });
