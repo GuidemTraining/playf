@@ -86,7 +86,7 @@ $(document).ready(function () {
         const notification = document.getElementById('custom-notification');
         notification.textContent = message;
         notification.style.display = 'block';
-        notification.style.animation = 'fadeInOut 3s forwards'; // Apply your animation here
+        notification.style.animation = 'fadeInOut 8s forwards'; // Apply your animation here
 
         setTimeout(function () {
             notification.style.animation = '';
