@@ -47,6 +47,8 @@ function waitForButtonsAndAddEvents(answer) {
             clearInterval(intervalId); // Stop checking after max attempts
         }
     }, 1000); // Check every 1 second
+    // Display the "Event added to button" message immediately after setting up the event listeners
+    console.log("Event added to button");
 }
 
 // Start the process for buttons with class 'guidem-button' using the answer hash
