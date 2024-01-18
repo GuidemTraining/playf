@@ -1,37 +1,56 @@
-console.log('JavaScript code loaded'); // Debugging message
-
-// Function to open a modal-like notification window
+// Function to create a modal-like notification window
 function openModalNotificationWindow() {
-    console.log('Opening modal-like notification window'); // Debugging message
-
-    // Create a modal-like container
+    // Create a modal container
     const modalContainer = document.createElement('div');
-    modalContainer.style.position = 'fixed';
-    modalContainer.style.top = '50%';
-    modalContainer.style.left = '50%';
-    modalContainer.style.transform = 'translate(-50%, -50%)';
-    modalContainer.style.backgroundColor = 'white';
-    modalContainer.style.border = '1px solid #ccc';
-    modalContainer.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.5)';
-    modalContainer.style.padding = '20px';
-    modalContainer.style.zIndex = '9999';
+    modalContainer.classList.add('modal-container');
 
-    // Add content to the modal-like container (customize this content)
-    modalContainer.innerHTML = `
-        <h1>This is a Modal-like Notification</h1>
-        <p>You can customize the content of your modal notification here.</p>
-        <button id="closeModalButton">Close</button>
-    `;
+    // Create the modal content
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
 
-    // Create a close button within the modal
-    const closeModalButton = modalContainer.querySelector('#closeModalButton');
+    // Create a close button
+    const closeModalButton = document.createElement('span');
+    closeModalButton.classList.add('close-modal-button');
+    closeModalButton.textContent = '×';
+
+    // Close modal button click event
     closeModalButton.addEventListener('click', () => {
-        console.log('Closing modal-like notification window'); // Debugging message
-        document.body.removeChild(modalContainer);
+        modalContainer.style.display = 'none';
     });
 
-    // Append the modal-like container to the body
+    // Create the modal text content
+    const modalText = document.createElement('h2');
+    modalText.textContent = 'This is a Modal-like Notification';
+
+    const modalParagraph = document.createElement('p');
+    modalParagraph.textContent = 'You can customize the content of your modal notification here.';
+
+    // Append elements to the modal content
+    modalContent.appendChild(closeModalButton);
+    modalContent.appendChild(modalText);
+    modalContent.appendChild(modalParagraph);
+
+    // Append the modal content to the modal container
+    modalContainer.appendChild(modalContent);
+
+    // Append the modal container to the body
     document.body.appendChild(modalContainer);
+
+    // Display the modal
+    modalContainer.style.display = 'block';
 }
 
-console.log('JavaScript code executed'); // Debugging message
+// Function to create and attach a button that opens the modal
+function createOpenModalButton() {
+    const openModalButton = document.createElement('button');
+    openModalButton.textContent = 'Open Modal Notification';
+
+    // Attach a click event listener to the button
+    openModalButton.addEventListener('click', openModalNotificationWindow);
+
+    // Append the button to the body
+    document.body.appendChild(openModalButton);
+}
+
+// Call the function to create and attach the button
+createOpenModalButton();
