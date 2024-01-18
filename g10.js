@@ -1,84 +1,120 @@
-// Function to generate SHA-256 hash
-async function sha256(message) {
-    // encode as UTF-8
-    const msgBuffer = new TextEncoder().encode(message);            
-    // hash the message
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    // convert ArrayBuffer to Array
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    // convert bytes to hex string                  
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
+// Function to create and update the notification badge
+function createNotificationBadge(count) {
+    // Create a new badge element
+    const badge = document.createElement('div');
+    badge.classList.add('notification-badge');
+    badge.textContent = count;
+
+    // Append the badge to the document body
+    document.body.appendChild(badge);
+
+    // Function to update the badge content
+    function updateBadge(newCount) {
+        badge.textContent = newCount;
+    }
+
+    return updateBadge;
 }
 
-async function checkAnswer(inputValue, correctHash) {
-    const inputHash = await sha256(inputValue);
-    return inputHash === correctHash;
-}
+// Example usage:
+const updateBadge = createNotificationBadge(0); // Initialize with count 0
 
-function displayAlert(message, isSuccess) {
-    const alertBox = document.createElement('div');
-    alertBox.style.padding = '10px';
-    alertBox.style.marginTop = '10px';
-    alertBox.style.color = isSuccess ? '#155724' : '#721c24';
-    alertBox.style.backgroundColor = isSuccess ? '#d4edda' : '#f8d7da';
-    alertBox.style.border = '1px solid';
-    alertBox.style.borderColor = isSuccess ? '#c3e6cb' : '#f5c6cb';
-    alertBox.style.borderRadius = '4px';
-    alertBox.style.textAlign = 'left';
-    alertBox.innerText = message;
-    
-    // Close button for alert
-    const closeButton = document.createElement('span');
-    closeButton.innerText = '×';
-    closeButton.style.float = 'right';
-    closeButton.style.cursor = 'pointer';
-    closeButton.style.marginLeft = '15px';
-    closeButton.onclick = function() {
-        alertBox.remove();
-    };
-    
-    alertBox.appendChild(closeButton);
-    
-    document.body.appendChild(alertBox);
-}
-
+// Function to add event to submit button and handle input validation
 function addEventToButton(buttonId) {
     const button = document.getElementById(buttonId);
-    const input = document.querySelector(`#${buttonId.replace('submit-button', 'flag-input')}`);
-    const correctHash = '9a36...'; // The correct SHA-256 hash value for the answer
+    if (button) {
+        button.addEventListener('click', function () {
+            // Get the input value
+            const inputId = buttonId.replace('submit-button', 'gflag-input');
+            const input = document.getElementById(inputId);
+            if (input) {
+                const answer = input.value.trim(); // Trim whitespace
+                const answerSHA256 = sha256(answer); // Calculate SHA256 hash
 
-    if (button && input) {
-        button.addEventListener('click', async function () {
-            const isCorrect = await checkAnswer(input.value, correctHash);
-            if (isCorrect) {
-                displayAlert('Correct answer!', true);
-            } else {
-                displayAlert('Uh-oh! Your answer is incorrect.', false);
+                // Replace with the actual SHA256 answers
+                const correctAnswersSHA256 = {
+                    "1": "SHA256_hash_of_correctAnswer1",
+                    "2": "SHA256_hash_of_correctAnswer2",
+                    // ...
+                    "10": "SHA256_hash_of_correctAnswer10"
+                };
+
+                const formNumber = buttonId.replace('submit-button', '');
+                const isCorrect = answerSHA256 === correctAnswersSHA256[formNumber];
+
+                if (isCorrect) {
+                    displayAlert('Correct Answer!', 'green', formNumber);
+                    input.disabled = true;
+                    input.type = 'password';
+                    input.value = '********';
+                    input.style.backgroundColor = '#ccc';
+                    input.classList.add('completed-input');
+                    button.style.backgroundColor = '#28a745';
+                    button.textContent = 'Completed';
+                    button.disabled = true;
+                    localStorage.setItem(`isCorrect${formNumber}`, 'true');
+                    localStorage.setItem(`isCompleted${formNumber}`, 'true');
+
+                    // Update the badge count
+                    const currentCount = parseInt(updateBadge());
+                    updateBadge(currentCount + 1);
+                } else {
+                    displayAlert('Incorrect Answer! Please try again.', 'red', formNumber);
+                }
             }
         });
         console.log("Event added to button:", buttonId);
-        return true;
+        return true; // Indicate that the button was found and event was added
     }
-    return false;
+    return false; // Button not found
 }
 
+// Function to wait for button and add event
 function waitForButtonAndAddEvent(buttonId) {
     const maxAttempts = 10;
     let attempts = 0;
 
     const intervalId = setInterval(function () {
         if (addEventToButton(buttonId) || attempts >= maxAttempts) {
-            clearInterval(intervalId);
+            clearInterval(intervalId); // Stop checking once the button is found or max attempts reached
         }
         attempts++;
-    }, 1000);
+    }, 1000); // Check every 1 second
 }
 
+// Start the process for 'submit-button1'
 waitForButtonAndAddEvent('submit-button1');
 
+// Thinkific CoursePlayerV2 hook logic (if applicable)
 if (typeof CoursePlayerV2 !== 'undefined') {
     CoursePlayerV2.on('hooks:contentDidChange', function (data) {
         waitForButtonAndAddEvent('submit-button1');
     });
+}
+
+// Function to sanitize HTML input
+function sanitizeHTML(str) {
+    var temp = document.createElement('div');
+    temp.textContent = str;
+    return temp.innerHTML;
+}
+
+// Function to display an alert message
+function displayAlert(message, color, formNumber) {
+    var alertDiv = document.querySelector(`#gflag-form${formNumber} .kapow-alert`);
+    alertDiv.textContent = message;
+    alertDiv.style.color = color;
+    setTimeout(function () {
+        alertDiv.textContent = '';
+    }, 5000);
+}
+
+// SHA256 hash function
+async function sha256(str) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    return hashHex;
 }
