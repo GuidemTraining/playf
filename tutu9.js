@@ -1,5 +1,6 @@
 $(document).ready(function () {
     reloadGuidemButtonHandlers();
+    addEventToGuidemButtons();
     const correctAnswers = ['GOODMODE1', 'GOODMODE2', 'GOODMODE3', 'GOODMODE4', 'GOODMODE5', 'GOODMODE6', 'GOODMODE7', 'GOODMODE8', 'GOODMODE9', 'GOODMODE10'];
 
     // Function to display a custom notification with animation
