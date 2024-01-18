@@ -25,31 +25,14 @@ function addEventToButtons(answer) {
     }
 }
 
-function waitForButtonsAndAddEvents(answer) {
-    const maxAttempts = 10;
-    let attempts = 0;
-
-    const intervalId = setInterval(function () {
-        if (eventListenerAdded || attempts >= maxAttempts) {
-            clearInterval(intervalId); // Stop checking once the event listener is added or max attempts reached
-        }
-        attempts++;
-    }, 1000); // Check every 1 second
-}
-
 // Start the process for buttons with class 'guidem-button' using the answer hash
-waitForButtonsAndAddEvents('correctAnswer1Hash');
-
-// Thinkific CoursePlayerV2 hook logic (if applicable)
-if (typeof CoursePlayerV2 !== 'undefined') {
-    CoursePlayerV2.on('hooks:contentDidChange', function (data) {
-        waitForButtonsAndAddEvents('correctAnswer1Hash');
-    });
-}
+addEventToButtons('correctAnswer1Hash');
 
 function sha256(input) {
     // Implement SHA-256 hashing here (you can use a library or write your own)
     // Return the hash value as a string
+    // For testing purposes, you can use a simple function like this:
+    // return input; // Replace this with actual SHA-256 hashing
 }
 
 function displayAlert(message, color) {
