@@ -114,7 +114,7 @@ $(document).ready(function () {
     }
 
     // Use window.onload for additional reliability in SPA
-    window.onload = function () {
+    window.onload = reloadGuidemButtonHandlers() {
         // Call your custom initialization logic here
         console.log("Window has fully loaded.");
     };
