@@ -76,7 +76,21 @@ $(document).ready(function () {
         // Add event listeners again
         addEventToGuidemButtons();
     }
+    function waitForButtonsAndAddEvents(answer) {
+    const maxAttempts = 10;
+    let attempts = 0;
 
+    const intervalId = setInterval(function () {
+        if (document.readyState === "complete") { // Wait for the page to fully load
+            addEventToButtons(answer);
+            clearInterval(intervalId); // Stop checking once the event listeners are added
+        }
+        attempts++;
+        if (attempts >= maxAttempts) {
+            clearInterval(intervalId); // Stop checking after max attempts
+        }
+    }, 1000); // Check every 1 second
+}
     // Your triggers or events that require reloading the event handlers
     // Example trigger:
     const reloadButton = document.getElementById('reload-button');
