@@ -99,6 +99,15 @@ $(document).ready(function() {
         return; // Don't proceed with submission if input is empty
       }
 
+      // Check if there's an ongoing cooldown for incorrect attempts
+      if (incorrectAttempts > 0) {
+        if (incorrectAttempts <= 5) {
+          // Display a blue notification for the first 5 seconds cooldown
+          toastr.info(`Whoa not so fast we are hackers too! 5 Second Cooldown!`, null, { "backgroundColor": "#3498db" });
+        }
+        return; // Don't proceed with submission during cooldown
+      }
+
       // Get the specific answer for the question ID
       const specificAnswer = getSpecificAnswer(questionId);
 
@@ -112,12 +121,10 @@ $(document).ready(function() {
           toastr.error(`Hi ${userFirstName}, incorrect answer`);
           incorrectAttempts++;
 
-          // Check if 10 incorrect attempts were made within 1 minute
-          if (incorrectAttempts >= 10) {
-            const currentTime = Date.now();
-            banEndTime = currentTime + 5 * 60 * 1000; // Ban for 5 minutes
-            toastr.error(`Hi ${userFirstName}, you have been banned for 5 minutes due to excessive incorrect answers.`);
-          }
+          // Start the 5-second cooldown for incorrect submissions
+          setTimeout(function() {
+            resetIncorrectAttempts();
+          }, 5000);
         } else {
           // Handle correct answer
           form.find('input[type="text"]').prop('disabled', true);
@@ -140,8 +147,7 @@ $(document).ready(function() {
             userId: userId,
             userEmail: userEmail,
             questionId: questionId,
-            answer: inputValue,
-            timestamp: new Date().toISOString() // Add timestamp
+            answer: inputValue
           };
 
           // Simulate sending the data with AJAX
@@ -186,8 +192,7 @@ $(document).ready(function() {
             userId: userId,
             userEmail: userEmail,
             questionId: questionId,
-            answer: inputValue,
-            timestamp: new Date().toISOString() // Add timestamp
+            answer: inputValue
           };
 
           // Simulate sending the data with AJAX
@@ -212,12 +217,10 @@ $(document).ready(function() {
           toastr.error(`Hi ${userFirstName}, incorrect answer`);
           incorrectAttempts++;
 
-          // Check if 10 incorrect attempts were made within 1 minute
-          if (incorrectAttempts >= 10) {
-            const currentTime = Date.now();
-            banEndTime = currentTime + 5 * 60 * 1000; // Ban for 5 minutes
-            toastr.error(`Hi ${userFirstName}, you have been banned for 5 minutes due to excessive incorrect answers.`);
-          }
+          // Start the 5-second cooldown for incorrect submissions
+          setTimeout(function() {
+            resetIncorrectAttempts();
+          }, 5000);
         }
       }
     }
