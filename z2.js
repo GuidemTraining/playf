@@ -27,6 +27,11 @@ $(document).ready(function () {
                 }
 
                 lastIncorrectTime = currentTime; // Update last incorrect time
+            } else {
+                // If the answer is correct, change the button to "Completed" and make it green
+                $(this).text('Completed');
+                $(this).css('background-color', 'green');
+                $(this).prop('disabled', true); // Disable the button
             }
 
             // Simulate sending data to server.js (printing in console)
@@ -36,15 +41,19 @@ $(document).ready(function () {
 
     // Function to handle the answer
     function sendDataToServer(questionId, answer) {
+        // Retrieve userId and lessonId from local storage (replace with your logic)
+        const userId = localStorage.getItem('userId');
+        const lessonId = localStorage.getItem('lessonId');
+
         // Simulate sending data to server.js (printing in console)
         console.log("Sending data to server.js:");
         console.log("Question ID: ", questionId);
-        console.log("User ID: ", getUserId()); // Replace with your logic to get user ID
-        console.log("Lesson ID: ", getLessonId()); // Replace with your logic to get lesson ID
+        console.log("User ID: ", userId);
+        console.log("Lesson ID: ", lessonId);
         console.log("Answer: ", answer);
 
         // Check for missing data and print error if any data is missing
-        if (!questionId || !getUserId() || !getLessonId() || !answer) {
+        if (!questionId || !userId || !lessonId || !answer) {
             console.error("Error: Missing data.");
         }
     }
@@ -57,18 +66,6 @@ $(document).ready(function () {
     // Function to enable the submit button
     function enableSubmitButton() {
         $('.guidem-button').prop('disabled', false);
-    }
-
-    // Function to get user ID (replace with your logic)
-    function getUserId() {
-        // Replace with your logic to get user ID
-        return '123456';
-    }
-
-    // Function to get lesson ID (replace with your logic)
-    function getLessonId() {
-        // Replace with your logic to get lesson ID
-        return 'lesson123';
     }
 
     // Observer for any DOM changes
