@@ -90,8 +90,14 @@ $(document).ready(function() {
 
     const form = $(this).closest('.guidem-form');
     if (form.length) {
-      const inputValue = form.find('input[type="text"]').val();
+      const inputValue = String(form.find('input[type="text"]').val()); // Always treat input as a string
       const questionId = form.data('question-id');
+
+      // Validate the input to ensure it's not empty
+      if (inputValue.trim() === '') {
+        toastr.error(`Hi ${userFirstName}, please enter an answer.`);
+        return; // Don't proceed with submission if input is empty
+      }
 
       // Get the specific answer for the question ID
       const specificAnswer = getSpecificAnswer(questionId);
@@ -114,7 +120,7 @@ $(document).ready(function() {
           }
         } else {
           // Handle correct answer
-          form.find('input[type="text"]').prop('disabled', true).attr('placeholder', `You have already completed this. Grit & Grind, ${userFirstName}!`);
+          form.find('input[type="text"]').prop('disabled', true);
           $(this).text('Completed').css('background-color', 'green').prop('disabled', true);
           toastr.success(`Hi ${userFirstName}, correct answer`);
 
@@ -134,7 +140,8 @@ $(document).ready(function() {
             userId: userId,
             userEmail: userEmail,
             questionId: questionId,
-            answer: inputValue
+            answer: inputValue,
+            timestamp: new Date().toISOString() // Add timestamp
           };
 
           // Simulate sending the data with AJAX
@@ -159,7 +166,7 @@ $(document).ready(function() {
         // Handle specific answers
         if (inputValue.toUpperCase() === specificAnswer) {
           // Handle correct specific answer
-          form.find('input[type="text"]').prop('disabled', true).attr('placeholder', `You have already completed this. Grit & Grind, ${userFirstName}!`);
+          form.find('input[type="text"]').prop('disabled', true);
           $(this).text('Completed').css('background-color', 'green').prop('disabled', true);
           toastr.success(`Hi ${userFirstName}, correct answer`);
 
@@ -179,7 +186,8 @@ $(document).ready(function() {
             userId: userId,
             userEmail: userEmail,
             questionId: questionId,
-            answer: inputValue
+            answer: inputValue,
+            timestamp: new Date().toISOString() // Add timestamp
           };
 
           // Simulate sending the data with AJAX
