@@ -27,17 +27,31 @@ $(document).ready(function () {
                 }
 
                 lastIncorrectTime = currentTime; // Update last incorrect time
+
+                // Show incorrect notification
+                showNotification('Incorrect', 'red');
             } else {
                 // If the answer is correct, change the button to "Completed" and make it green
                 $(this).text('Completed');
                 $(this).css('background-color', 'green');
                 $(this).prop('disabled', true); // Disable the button
+
+                // Show correct notification
+                showNotification('Correct', 'green');
             }
 
             // Simulate sending data to server.js (printing in console)
             sendDataToServer(questionId, inputValue);
         }
     });
+
+    // Function to show notifications
+    function showNotification(message, color) {
+        const notification = $('.custom-notification');
+        notification.text(message);
+        notification.css('background-color', color);
+        notification.fadeIn().delay(2000).fadeOut();
+    }
 
     // Function to handle the answer
     function sendDataToServer(questionId, answer) {
