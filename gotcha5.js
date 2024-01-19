@@ -3,6 +3,8 @@ $(document).ready(function() {
   var courseId, courseName, courseSlug, lessonId, lessonName, lessonSlug, chapterName, chapterId, userId, userName, userEmail, userFirstName;
   var incorrectAttempts = 0; // Track incorrect attempts
   var banEndTime = 0; // Time when the ban ends (initially set to 0)
+  var completedTasks = 0; // Track completed tasks
+  var totalTasks = 10; // Total number of tasks/questions
 
   // Function to check if the user is banned
   function isBanned() {
@@ -20,7 +22,7 @@ $(document).ready(function() {
   function showHintModal(questionId, hint) {
     // Create a Bootstrap modal element
     const modal = `
-      <div class="modal fade  custom-modal" id="hintModal" tabindex="-1" aria-labelledby="hintModalLabel" aria-hidden="true">
+      <div class="modal fade custom-modal" id="hintModal" tabindex="-1" aria-labelledby="hintModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -121,7 +123,6 @@ $(document).ready(function() {
 
       if (!specificAnswer) {
         // If specific answer is not defined for the question ID, perform the usual check
-        // Replace the following line with your actual check for correct or incorrect answer
         const isAnswerCorrect = inputValue === "CorrectAnswer"; // Replace with actual logic
 
         if (!isAnswerCorrect) {
@@ -135,6 +136,9 @@ $(document).ready(function() {
           }, 5000);
         } else {
           // Handle correct answer
+          completedTasks++; // Increment completed tasks
+          updateProgressBar(completedTasks, totalTasks); // Update progress bar
+
           form.find('input[type="text"]').prop('disabled', true);
           $(this).text('Completed').css('background-color', 'green').prop('disabled', true);
           toastr.success(`Hi ${userFirstName}, correct answer`);
@@ -158,10 +162,7 @@ $(document).ready(function() {
             answer: inputValue
           };
 
-          // Simulate sending the data with AJAX
-          console.log("Simulated data sent to server:", submissionData);
-          // Uncomment the following AJAX call to actually send data
-          /*
+          // Sending the data with AJAX
           $.ajax({
             url: '/your-server-endpoint', // Replace with your server endpoint
             type: 'POST',
@@ -174,12 +175,14 @@ $(document).ready(function() {
               toastr.error(`Hi ${userFirstName}, error sending data`);
             }
           });
-          */
         }
       } else {
         // Handle specific answers
         if (inputValue.toUpperCase() === specificAnswer) {
           // Handle correct specific answer
+          completedTasks++; // Increment completed tasks
+          updateProgressBar(completedTasks, totalTasks); // Update progress bar
+
           form.find('input[type="text"]').prop('disabled', true);
           $(this).text('Completed').css('background-color', 'green').prop('disabled', true);
           toastr.success(`Hi ${userFirstName}, correct answer`);
@@ -203,10 +206,7 @@ $(document).ready(function() {
             answer: inputValue
           };
 
-          // Simulate sending the data with AJAX
-          console.log("Simulated data sent to server:", submissionData);
-          // Uncomment the following AJAX call to actually send data
-          /*
+          // Sending the data with AJAX
           $.ajax({
             url: '/your-server-endpoint', // Replace with your server endpoint
             type: 'POST',
@@ -219,7 +219,6 @@ $(document).ready(function() {
               toastr.error(`Hi ${userFirstName}, error sending data`);
             }
           });
-          */
         } else {
           // Handle incorrect specific answer
           toastr.error(`Hi ${userFirstName}, incorrect answer`);
@@ -241,7 +240,7 @@ $(document).ready(function() {
       const questionId = form.data('question-id');
       let hint;
 
-      // Replace with your actual hint retrieval logic based on questionId
+      // Retrieve hint based on questionId
       if (questionId === 1) {
         hint = "Hint 1: This is a hint for question ID 1.";
       } else if (questionId === 2) {
