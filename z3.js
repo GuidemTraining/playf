@@ -52,6 +52,7 @@ $(document).ready(function () {
         notification.css('background-color', color);
         notification.fadeIn().delay(2000).fadeOut();
     }
+showNotification('Test Notification', 'blue');
 
     // Function to handle the answer
     function sendDataToServer(questionId, answer) {
