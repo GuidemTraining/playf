@@ -15,16 +15,17 @@ $(document).ready(function () {
         }
     }
 
-    function showBootstrapNotification(message, color) {
-        const notification = document.getElementById('bootstrap-notification');
-        const notificationText = document.getElementById('bootstrap-notification-text');
-        notificationText.textContent = message;
-        notification.classList.add(`bg-${color}`);
-        notification.classList.add('show');
+    function showCustomNotification(message, duration, color) {
+        const notification = document.getElementById('custom-notification');
+        notification.innerHTML = message;
+        notification.style.display = 'block';
+        notification.style.backgroundColor = color;
+        notification.style.animation = 'fadeInOut 5s forwards';
+
         setTimeout(function () {
-            notification.classList.remove(`bg-${color}`);
-            notification.classList.remove('show');
-        }, 3000);
+            notification.style.animation = '';
+            notification.style.display = 'none';
+        }, duration);
     }
 
     function buttonClickHandler(event) {
@@ -38,24 +39,48 @@ $(document).ready(function () {
                 if (correctAnswers.includes(inputValue)) {
                     input.disabled = true;
                     button.disabled = true; // Disable the button
-                    button.classList.add('btn-secondary');
+                    button.style.color = '#888';
                     button.textContent = 'Completed';
-                    showBootstrapNotification('Congrats! Your answer is correct.', 'success');
+                    button.style.backgroundColor = '#00cc00';
+                    showCustomNotification('<img src="checkmark.png" alt="Correct">', 3000, '#00cc00');
 
                     // Increment the completed count and update the progress bar
                     completedCount++;
                     updateProgressBar(completedCount, correctAnswers.length);
+                    const serverUrl = 'https://sb1.guidem.ph/api/submitData';
+                    const requestData = { userId: userId, userEmail: userEmail, answer: inputValue }; // Include userId and userEmail
+                    fetch(serverUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(requestData),
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json(); // Parse the response JSON if needed
+                    })
+                    .then(data => {
+                        // Handle the server's response data as needed
+                        console.log('Server response:', data);
+                    })
+                    .catch(error => {
+                        // Handle any errors that occurred during the fetch
+                        console.error('Fetch error:', error);
+                    });
 
                     // Check if all buttons in the first accordion are completed
                     if (completedCount === 10) {
                         isFirstAccordionCompleted = true;
                     }
                 } else {
-                    // Handle incorrect answer
-                    showBootstrapNotification('Try again! Your answer is incorrect.', 'danger');
-                    button.classList.add('btn-danger');
+                    // Handle incorrect answer as before
+                    showCustomNotification('<img src="xmark.png" alt="Incorrect">', 3000, 'red');
+                    button.style.backgroundColor = 'red';
                     setTimeout(function () {
-                        button.classList.remove('btn-danger');
+                        button.style.backgroundColor = '#0056b3';
                     }, 2000);
                 }
             }
