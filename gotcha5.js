@@ -29,7 +29,6 @@ $(document).ready(function() {
             <div class="modal-body">
               ${hint}
             </div>
-            </div>
           </div>
         </div>
       </div>
@@ -48,6 +47,18 @@ $(document).ready(function() {
       return "BOOTS";
     } else {
       return ""; // Return an empty string for other question IDs
+    }
+  }
+
+  // Function to update the progress bar
+  function updateProgressBar(completed, total) {
+    const progressBar = document.getElementById('progress-bar');
+    const percentage = (completed / total) * 100;
+    progressBar.style.width = percentage + '%';
+    // Update progress text if you have an element for it
+    const progressText = document.getElementById('progress-text');
+    if (progressText) {
+      progressText.textContent = `Your Progress: ${completed}/${total}`;
     }
   }
 
