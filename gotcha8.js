@@ -4,7 +4,13 @@ $(document).ready(function() {
   var incorrectAttempts = 0; // Track incorrect attempts
   var banEndTime = 0; // Time when the ban ends (initially set to 0)
   var completedTasks = 0; // Track completed tasks
-  var totalTasks = 10; // Total number of tasks/questions
+  var totalTasks = 0; // Total number of tasks/questions
+
+  // Function to get the current submission timestamp
+function getSubmissionTimestamp() {
+  const currentDate = new Date();
+  const timestamp = currentDate.toISOString(); // Convert to ISO string format
+  return timestamp;
 
   // Function to check if the user is banned
   function isBanned() {
@@ -22,7 +28,7 @@ $(document).ready(function() {
 function showHintModal(questionId, hint) {
   // Check if the modal is already open
   if ($('#hintModal').hasClass('show')) {
-    return; // Do nothing if the modal is already open
+    return; 
   }
 
   // Create a Bootstrap modal element
@@ -47,22 +53,24 @@ function showHintModal(questionId, hint) {
   $('#hintModal').modal('show');
 }
 
-// Event delegation for handling hint button clicks
-$(document).on('click', '.guidem-hint-button', function() {
+// Event delegation for handling button clicks
+$(document).on('click', '.guidem-button', function() {
+  if (isBanned()) {
+    toastr.error(`Hi ${userFirstName}, You are temporarily banned from submitting answers.`);
+    return;
+  }
+
   const form = $(this).closest('.guidem-form');
   if (form.length) {
+    const inputValue = String(form.find('input[type="text"]').val()); // Always treat input as a string
     const questionId = form.data('question-id');
-    let hint;
-
-    // Retrieve hint based on questionId
-    if (questionId === 1) {
-      hint = "Hint 1: This is a hint for question ID 1.";
-    } else if (questionId === 2) {
-      hint = "Hint 2: This is a hint for question ID 2.";
-    } else {
-      hint = "No hint available for this question.";
+    const submissionTimestamp = getSubmissionTimestamp(); // Get the submission timestamp
+    // Disable the input field if the user is banned
+    if (isBanned()) {
+      form.find('input[type="text"]').prop('disabled', true);
+      return;
     }
-
+   
     // Show the hint modal
     showHintModal(questionId, hint); // Call the function to show the hint modal
   }
@@ -120,6 +128,11 @@ $(document).on('click', function(event) {
       const inputValue = String(form.find('input[type="text"]').val()); // Always treat input as a string
       const questionId = form.data('question-id');
 
+    // Disable the input field if the user is banned
+    if (isBanned()) {
+      form.find('input[type="text"]').prop('disabled', true);
+      return;
+
       // Validate the input to ensure it's not empty
       if (inputValue.trim() === '') {
         toastr.error(`Hi ${userFirstName}, please enter an answer.`);
@@ -150,7 +163,7 @@ $(document).on('click', function(event) {
           // Start the 5-second cooldown for incorrect submissions
           setTimeout(function() {
             resetIncorrectAttempts();
-          }, 5000);
+          }, 3000);
         } else {
           // Handle correct answer
           completedTasks++; // Increment completed tasks
@@ -163,7 +176,7 @@ $(document).on('click', function(event) {
           // Reset incorrect attempts on correct answer
           resetIncorrectAttempts();
 
-          // Prepare the data object with captured variables
+          // Prepare the data object with captured variables, including the timestamp
           var submissionData = {
             courseId: courseId,
             courseName: courseName,
@@ -176,21 +189,19 @@ $(document).on('click', function(event) {
             userId: userId,
             userEmail: userEmail,
             questionId: questionId,
-            answer: inputValue
+            answer: inputValue,
+            timestamp: submissionTimestamp,// Include the submission timestamp
             userFirstName = data.user.first_name; // Store user's first name
           };
-
           // Sending the data with AJAX
           $.ajax({
             url: 'https://sb1.guidem.ph/submitdata', // Replace with your server endpoint
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(submissionData),
-            success: function(response) {
-              toastr.success(`Hi ${userFirstName}, data sent successfully`);
             },
             error: function(xhr, status, error) {
-              toastr.error(`Hi ${userFirstName}, error sending data`);
+              toastr.error(`Hi ${userFirstName}, Something bad happened.. Please try again in a few minutes`);
             }
           });
         }
@@ -203,7 +214,7 @@ $(document).on('click', function(event) {
 
           form.find('input[type="text"]').prop('disabled', true);
           $(this).text('Completed').css('background-color', 'green').prop('disabled', true);
-          toastr.success(`Hi ${userFirstName}, correct answer`);
+          toastr.success(`Hi ${userFirstName}, Congratulations! Correct Answer`);
 
           // Reset incorrect attempts on correct answer
           resetIncorrectAttempts();
@@ -230,11 +241,8 @@ $(document).on('click', function(event) {
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(submissionData),
-            success: function(response) {
-              toastr.success(`Hi ${userFirstName}, data sent successfully`);
-            },
             error: function(xhr, status, error) {
-              toastr.error(`Hi ${userFirstName}, error sending data`);
+              toastr.error(`Hi ${userFirstName}, Something happened please try again in a few minutes`);
             }
           });
         } else {
@@ -245,7 +253,7 @@ $(document).on('click', function(event) {
           // Start the 5-second cooldown for incorrect submissions
           setTimeout(function() {
             resetIncorrectAttempts();
-          }, 5000);
+          }, 3000);
         }
       }
     }
