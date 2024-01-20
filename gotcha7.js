@@ -164,7 +164,7 @@ $(document).ready(function() {
 
           // Sending the data with AJAX
           $.ajax({
-            url: 'https://sb1.guidem.ph/submitdata' // Replace with your server endpoint
+            url: 'https://sb1.guidem.ph/submitdata', // Replace with your server endpoint
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(submissionData),
