@@ -18,51 +18,68 @@ $(document).ready(function() {
     banEndTime = 0;
   }
 
-  // Function to display a hint modal for a specific question ID
-  function showHintModal(questionId, hint) {
-    // Create a Bootstrap modal element
-    const modal = `
-      <div class="modal fade custom-modal" id="hintModal" tabindex="-1" aria-labelledby="hintModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="hintModalLabel">Hint</h5>
-            </div>
-            <div class="modal-body">
-              ${hint}
-            </div>
+// Function to show the hint modal
+function showHintModal(questionId, hint) {
+  // Check if the modal is already open
+  if ($('#hintModal').hasClass('show')) {
+    return; // Do nothing if the modal is already open
+  }
+
+  // Create a Bootstrap modal element
+  const modal = `
+    <div class="modal fade custom-modal" id="hintModal" tabindex="-1" aria-labelledby="hintModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="hintModalLabel">Hint</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ${hint}
           </div>
         </div>
       </div>
-    `;
+    </div>
+  `;
 
-    // Append the modal to the body and show it
-    $('body').append(modal);
-    $('#hintModal').modal('show');
-  }
+  // Append the modal to the body and show it
+  $('body').append(modal);
+  $('#hintModal').modal('show');
+}
 
-  // Function to get specific answers for question IDs
-  function getSpecificAnswer(questionId) {
+// Event delegation for handling hint button clicks
+$(document).on('click', '.guidem-hint-button', function() {
+  const form = $(this).closest('.guidem-form');
+  if (form.length) {
+    const questionId = form.data('question-id');
+    let hint;
+
+    // Retrieve hint based on questionId
     if (questionId === 1) {
-      return "BLOOD";
+      hint = "Hint 1: This is a hint for question ID 1.";
     } else if (questionId === 2) {
-      return "BOOTS";
+      hint = "Hint 2: This is a hint for question ID 2.";
     } else {
-      return ""; // Return an empty string for other question IDs
+      hint = "No hint available for this question.";
     }
-  }
 
-  // Function to update the progress bar
-  function updateProgressBar(completed, total) {
-    const progressBar = document.getElementById('progress-bar');
-    const percentage = (completed / total) * 100;
-    progressBar.style.width = percentage + '%';
-    // Update progress text if you have an element for it
-    const progressText = document.getElementById('progress-text');
-    if (progressText) {
-      progressText.textContent = `Your Progress: ${completed}/${total}`;
-    }
+    // Show the hint modal
+    showHintModal(questionId, hint); // Call the function to show the hint modal
   }
+});
+
+// Close the modal when the escape key is pressed or when clicking outside of it
+$(document).on('keydown', function(event) {
+  if (event.key === "Escape" && $('#hintModal').hasClass('show')) {
+    $('#hintModal').modal('hide');.
+  }
+});
+
+$(document).on('click', function(event) {
+  if ($(event.target).hasClass('modal')) {
+    $('#hintModal').modal('hide');
+  }
+});
 
   // Check if CoursePlayerV2 is defined
   if (typeof(CoursePlayerV2) !== 'undefined') {
@@ -160,6 +177,7 @@ $(document).ready(function() {
             userEmail: userEmail,
             questionId: questionId,
             answer: inputValue
+            userFirstName = data.user.first_name; // Store user's first name
           };
 
           // Sending the data with AJAX
