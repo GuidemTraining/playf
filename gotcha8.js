@@ -18,6 +18,16 @@ function getSubmissionTimestamp() {
     return banEndTime > currentTime;
   }
 
+// Count the number of buttons in the current lesson
+  function countButtonsInLesson(lessonContent) {
+    const buttons = lessonContent.find('.guidem-button'); // Adjust the selector as needed
+    return buttons.length;
+  }
+  // Update the number of buttons in the current lesson
+  function updateTotalTasks(lessonContent) {
+    const buttons = lessonContent.find('.guidem-button'); // Adjust the selector as needed
+    totalTasks = buttons.length; // Update the totalTasks global variable
+  }
   // Function to reset incorrect attempts and ban time
   function resetIncorrectAttempts() {
     incorrectAttempts = 0;
@@ -191,15 +201,14 @@ $(document).on('click', function(event) {
             questionId: questionId,
             answer: inputValue,
             timestamp: submissionTimestamp,// Include the submission timestamp
-            userFirstName = data.user.first_name; // Store user's first name
+            userFirstName: data.user.first_name; // Store user's first name
           };
           // Sending the data with AJAX
           $.ajax({
-            url: 'https://sb1.guidem.ph/submitdata', // Replace with your server endpoint
+            url: 'https://sb1.guidem.ph/submitdata', 
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(submissionData),
-            },
             error: function(xhr, status, error) {
               toastr.error(`Hi ${userFirstName}, Something bad happened.. Please try again in a few minutes`);
             }
